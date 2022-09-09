@@ -32,6 +32,12 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
+  @Column(nullable = true)
+  private String profileImgUrl;
+//image 별로 뺄려다가 생각해 보니까 id 값 하나 나오는데 각 다른 부분에서 사용하니
+//그냥 멤버에 넣는게 맞는거 같아서 넣었습니다~ 마이 페이지에서 어처피 프로필 사진, 닉네임, 비밀 번호 반환해
+//줘야 하기도 하고요~
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
