@@ -40,8 +40,8 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private int viewCount;   // 조회 수 (상세 페이지 get 요청 시 ++)
 
-//    @Column(nullable = false)
-//    private String postImgUrl; //게시글 이미지(추후 변경 가능)
+    @Column(nullable = true)
+    private String postImgUrl; //게시글 이미지(추후 변경 가능)
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
