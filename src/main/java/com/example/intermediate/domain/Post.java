@@ -23,6 +23,9 @@ public class Post extends Timestamped {
     private String title;    //게시글 제목
 
     @Column(nullable = false)
+    private String state;    //판매 상태
+
+    @Column(nullable = false)
     private String tag;      //상품 카테고리
 
     @Column(nullable = false)
@@ -48,6 +51,26 @@ public class Post extends Timestamped {
     private Member member;   // 회원(작성자)
 
 
+
+
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
+    public  void like(){
+        this.likeCount +=1;
+    } //총 좋아요 수 +
+    public  void dislike(){
+        this.likeCount -=1;
+    } //총 좋아요 수 -
+    public  void state(){
+        this.state = "판매중";
+    } //판매중으로 변경
+    public  void outstate(){
+        this.state = "판매완료";
+    } //판매완료로 변경
+    public  void view(){
+        this.viewCount +=1;
+    } //조회 수
 
 
 
