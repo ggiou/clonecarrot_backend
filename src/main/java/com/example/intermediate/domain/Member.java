@@ -32,6 +32,9 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
+  @Column(unique = true)
+  private Long kakaoId;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
