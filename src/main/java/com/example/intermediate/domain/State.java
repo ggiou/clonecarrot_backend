@@ -15,12 +15,21 @@ import javax.persistence.*;
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stateId;
+    private Long id;
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+
     @Column
-    private Long postId;  //참조 ID
+    private String state;
+
+    public void state(){
+        this.state = "판매중";
+    } //판매중으로 변경
+    public  void outstate(){
+        this.state = "판매완료";
+
+    } //판매완료로 변경
 }

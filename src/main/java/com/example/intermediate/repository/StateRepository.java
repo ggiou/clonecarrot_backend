@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StateRepository extends JpaRepository<State, Long> {
-    Optional<State> findByStateIdAndPostId(Long stateId, Long postId);
+    Optional<State> findById(Long stateId);
+
     List<State> findByMember (Member member);
 }

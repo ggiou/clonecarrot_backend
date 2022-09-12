@@ -20,12 +20,12 @@ public class StateController {
 
     private final StateService stateService;
 
-    @RequestMapping(value = "/api/auth/state", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/api/auth/state", method = RequestMethod.PUT)
     public ResponseDto<?> state_post(@RequestBody StateRequestDto stateRequestDto, HttpServletRequest request){
         return stateService.state_post(stateRequestDto, request);
     } //판매 중 상태 변경
 
-    @RequestMapping(value = "/api/auth/outstate", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/api/auth/outstate", method = RequestMethod.PUT)
     public ResponseDto<?> outstate_post(@RequestBody StateRequestDto stateRequestDto, HttpServletRequest request){
         return stateService.outstate_post(stateRequestDto, request);
     }//판매 완료 상태로 변경

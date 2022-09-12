@@ -36,7 +36,7 @@ public class LikeSerivce {
         post.like(); //총 좋아요 수 올리기
         Like like = Like.builder()
                 .member(member)
-                .postId(post.getPostId())
+                .postId(post.getId())
                 .build();
         likeRepository.save(like);
         return ResponseDto.success(post.getTitle()+"가 관심 항목에 추가 되었습니다.");
@@ -46,7 +46,7 @@ public class LikeSerivce {
     public ResponseDto<?> post_dislike(LikeRequestDto likeRequestDto, HttpServletRequest request) {
         Member member = validateMember(request); //현재 로그인 중인 멤버
 
-        Optional<Like> temp = likeRepository.findByLikeIdAndPostId(likeRequestDto.getLikeId(),likeRequestDto.getPostId());
+        Optional<Like> temp = likeRepository.findByIdAndPostId(likeRequestDto.getLikeId(),likeRequestDto.getPostId());
         if(!temp.isPresent()){
             return ResponseDto.fail("FAIL-DISLIKE", "해당 관심 항목이 존재하지 않습니다.");
         }
@@ -57,12 +57,12 @@ public class LikeSerivce {
         }
 
         Like like = temp.get();
-        if (!Objects.equals(like.getMember().getMemberId(), member.getMemberId())){
+        if (!Objects.equals(like.getMember().getId(), member.getId())){
             return ResponseDto.fail("FAIL-DISLIKE", "해당 관심 항목의 작성자가 아닙니다.");
         }
 
         Post post = temp2.get();
-        if (!Objects.equals(like.getLikeId(), post.getPostId())){
+        if (!Objects.equals(like.getPostId(), post.getId())){
             return ResponseDto.fail("FAIL-DISLIKE", "해당 게시글의 관심항목이 아닙니다.");
         }  //해당 로그인 한 유저가 해당 게시글의 관심항목 작성자가 아닐 경우에는 예외처리 해줘야 함
         post.dislike();

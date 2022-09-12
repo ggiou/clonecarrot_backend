@@ -16,7 +16,7 @@ public class Like extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long id;
 
     @Column
     private Long postId;  //참조 ID
