@@ -2,11 +2,7 @@ package com.example.intermediate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +30,14 @@ public class Member extends Timestamped {
 
   @Column(unique = true)
   private Long kakaoId;
+
+  @Column
+  private String location;
+
+  @PrePersist // 해당 테이블을 insert할 때 같이 실행
+  public void prePersist(){
+    this.location = this.location == null ? "현재 위치가 지정되어있지 않습니다." : this.location;
+  }
 
   @Override
   public boolean equals(Object o) {
