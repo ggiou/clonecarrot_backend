@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -125,13 +126,20 @@ public class PostService {
     }
 
     @Transactional
-    public ResponseDto<?> getPost(Long postId) {
+    public ResponseDto<?> getPost(Long postId, HttpServletRequest request) {
         Optional<Post> posts = postRepository.findById(postId);
         Post post = posts.get();
         if (null == post.getId()) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
         }
-        post.view();
+
+        Member member = validateMember(request);
+
+        if (member!=null){
+        if(!Objects.equals(member.getNickname(), post.getMember().getNickname()) ) {
+            post.view();
+        }}else post.view();
+        //로그인한 사용자가 자신이 작성한 글 조회수 ++ 제외
 
 
         return ResponseDto.success(

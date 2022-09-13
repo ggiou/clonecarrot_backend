@@ -26,8 +26,8 @@ public class PostController {
     } //게시글 전체 조회
 
     @RequestMapping(value = "/api/post/{postId}", method = RequestMethod.GET)
-    public ResponseDto<?> getPost(@PathVariable Long postId){
-        return postService.getPost(postId);
+    public ResponseDto<?> getPost(@PathVariable Long postId, HttpServletRequest request){
+        return postService.getPost(postId, request);
     } //postId의 게시글 상세 조회
 
     @RequestMapping(value = "/api/auth/post", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
