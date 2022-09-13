@@ -2,11 +2,7 @@ package com.example.intermediate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,11 +28,20 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
+
+  @Column(unique = true)
+  private Long kakaoId;
+
+  @Column
+  private String location;
+
+  @PrePersist // 해당 테이블을 insert할 때 같이 실행
+  public void prePersist(){
+    this.location = this.location == null ? "현재 위치가 지정되어있지 않습니다." : this.location;
+  }
+
   @Column(nullable = true)
   private String profileImgUrl;
-//image 별로 뺄려다가 생각해 보니까 id 값 하나 나오는데 각 다른 부분에서 사용하니
-//그냥 멤버에 넣는게 맞는거 같아서 넣었습니다~ 마이 페이지에서 어처피 프로필 사진, 닉네임, 비밀 번호 반환해
-//줘야 하기도 하고요~
 
   @Override
   public boolean equals(Object o) {
