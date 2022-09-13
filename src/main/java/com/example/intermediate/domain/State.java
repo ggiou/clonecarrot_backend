@@ -1,13 +1,35 @@
 package com.example.intermediate.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "State_table")
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stateId;
+    private Long id;
 
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;      //어떤 게시글(상품)의 판매 상태 (내 판매 상태 활용) -> 어처피 POST에 누가 작성잔지 알 수 있음
+    private Member member;
+
+
+    @Column
+    private String state;
+
+    public void state(){
+        this.state = "판매중";
+    } //판매중으로 변경
+    public  void outstate(){
+        this.state = "판매완료";
+
+    } //판매완료로 변경
 }

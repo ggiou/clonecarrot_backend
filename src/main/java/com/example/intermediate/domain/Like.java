@@ -16,13 +16,14 @@ public class Like extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long id;
+
+    @Column
+    private Long postId;  //참조 ID
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;  //어떤 사용자가 좋아요~(내 관심 상품 목록 활용)
 
-    @JoinColumn(name = "post_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;      //어떤 게시글 좋아요~ (내 관심 상품 목록 활용)
+
 }

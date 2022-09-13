@@ -1,4 +1,4 @@
-package com.example.intermediate.controller.request;
+package com.example.intermediate.configuration;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

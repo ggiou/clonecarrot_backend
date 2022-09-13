@@ -1,6 +1,8 @@
 package com.example.intermediate.domain;
 
 
+import com.example.intermediate.controller.request.PostRequestDto;
+import com.example.intermediate.controller.request.StateRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +19,13 @@ public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long id;
 
     @Column(nullable = false)
     private String title;    //게시글 제목
+
+    @Column(nullable = false)
+    private String state;    //판매 상태
 
     @Column(nullable = false)
     private String tag;      //상품 카테고리
@@ -48,7 +53,35 @@ public class Post extends Timestamped {
     private Member member;   // 회원(작성자)
 
 
+    public void update(PostRequestDto postRequestDto, String postImageUrl) {
+        this.title = postRequestDto.getTitle();
+        this.postImgUrl = postImageUrl;
+        this.tag = postRequestDto.getTag();
+        this.price = postRequestDto.getPrice();
+        this.content = postRequestDto.getContent();
+        this.location = postRequestDto.getLocation();
+    }
 
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
+    public  void like(){
+        this.likeCount +=1;
+    } //총 좋아요 수 +
+    public  void dislike(){
+        this.likeCount -=1;
+    } //총 좋아요 수 -
+
+    public void state(){
+        this.state = "판매중";
+    } //판매중으로 변경
+    public  void outstate(){
+        this.state = "판매완료";
+
+    } //판매완료로 변경
+    public  void view(){
+        this.viewCount +=1;
+    } //조회수
 
 
 }
