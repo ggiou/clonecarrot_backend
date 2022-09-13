@@ -11,5 +11,4 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StateRequestDto {
     private Long postId;
-
 }

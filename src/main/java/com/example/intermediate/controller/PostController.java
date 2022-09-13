@@ -16,7 +16,7 @@ public class PostController {
     private final PostService postService;
 
     @RequestMapping(value = "/api/auth/post", method = RequestMethod.POST, consumes = {"multipart/form-data"})
-    public ResponseDto<?> createPost(@ModelAttribute PostRequestDto postRequestDto, HttpServletRequest request) throws IOException{
+    public ResponseDto<?> createPost(@ModelAttribute PostRequestDto postRequestDto, HttpServletRequest request) throws IOException {
         return postService.createPost(postRequestDto, request);
     } //회원인 유저만 게시글 작성 가능
 
@@ -39,5 +39,4 @@ public class PostController {
     public ResponseDto<?> deletePost(@PathVariable Long postId, HttpServletRequest request) throws IOException{
         return postService.deletePost(postId, request);
     }
-
 }

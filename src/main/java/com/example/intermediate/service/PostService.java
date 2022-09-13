@@ -92,7 +92,7 @@ public class PostService {
                         .price(post.getPrice())
                         .postImgUrl(post.getPostImgUrl())
                         .location(post.getLocation())
-                        .auther(post.getMember().getNickname())
+                        .author(post.getMember().getNickname())
                         .tag(post.getTag())
                         .likeCount(post.getLikeCount())
                         .viewCount(post.getViewCount())
@@ -146,7 +146,7 @@ public class PostService {
                 PostResponseDto.builder()
                         .postId(post.getId())
                         .title(post.getTitle())
-                        .auther(post.getMember().getNickname())
+                        .author(post.getMember().getNickname())
                         .state(post.getState())
                         .tag(post.getTag())
                         .price(post.getPrice())
@@ -161,6 +161,7 @@ public class PostService {
     }
 
     @Transactional //transactional이 설정 안되면 update시 repository save 일일히 해줘야함
+
     public ResponseDto<?> updatePost(PostRequestDto postRequestDto, HttpServletRequest request) throws UnsupportedEncodingException {
         if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -225,6 +226,7 @@ public class PostService {
     }
 
     @Transactional
+
     public ResponseDto<?> deletePost(Long postId, HttpServletRequest request) {
 
         if (null == request.getHeader("RefreshToken")) {
@@ -281,5 +283,4 @@ public class PostService {
         Optional<Post> optionalPost = postRepository.findById(postId);
         return optionalPost.orElse(null);
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.intermediate.controller;
 
-import com.example.intermediate.controller.request.LikeRequestDto;
 import com.example.intermediate.controller.request.StateRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.service.StateService;
@@ -27,4 +26,3 @@ public class StateController {
         return stateService.outstate_post(postId, request);
     }//판매 완료 상태로 변경
 }
-

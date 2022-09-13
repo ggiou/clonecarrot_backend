@@ -19,12 +19,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class StateService {
+
     private final PostRepository postRepository;
     private final StateRepository stateRepository;
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public ResponseDto<?> createState( HttpServletRequest request){
+    public ResponseDto<?> createState(HttpServletRequest request){
         Member member = validateMember(request); //현재 로그인 중인 멤버
         State state = State.builder()
                 .member(member)
@@ -48,7 +49,6 @@ public class StateService {
         post.state(); //상태 변경 -> 판매중
         postRepository.save(post);
 
-
         Optional<State> temp2 = stateRepository.findById(postId);
 
         if (temp2.isEmpty()) {
@@ -59,7 +59,6 @@ public class StateService {
         state.state();
         stateRepository.save(state);
 
-
         return ResponseDto.success(post.getTitle()+"의 상태가 판매중으로 변경 되었습니다.");
     }
 
@@ -68,12 +67,10 @@ public class StateService {
         Member member = validateMember(request); //현재 로그인 중인 멤버
 
         Optional<Post> temp = postRepository.findById(postId);
-
         if (temp.isEmpty()) {
             return ResponseDto.fail("FAIL-STATE", "해당 게시글이 존재하지 않습니다.");
         }
         Post post = temp.get();
-
         if (post.validateMember(member)) {
             return ResponseDto.fail("FAIL-STATE", "게시글의 작성자만 상태를 변경할 수 있습니다.");
         }
@@ -81,11 +78,9 @@ public class StateService {
         postRepository.save(post);
 
         Optional<State> temp2 = stateRepository.findById(postId);
-
         if (temp2.isEmpty()) {
             return ResponseDto.fail("FAIL-STATE", "해당 게시글이 존재하지 않습니다.");
         }
-
         State state = temp2.get();
 
         state.outstate();
@@ -94,16 +89,12 @@ public class StateService {
         return ResponseDto.success(post.getTitle()+"의 상태가 판매완료로 변경 되었습니다.");
 
     }
-
-        @Transactional
-        public Member validateMember(HttpServletRequest request) {
-            if(!tokenProvider.validateToken(request.getHeader("RefreshToken"))){
-                return null;
-            }
-            return tokenProvider.getMemberFromAuthentication();
+    
+    @Transactional
+    public Member validateMember(HttpServletRequest request) {
+        if(!tokenProvider.validateToken(request.getHeader("RefreshToken"))){
+            return null;
         }
-
-
+        return tokenProvider.getMemberFromAuthentication();
     }
-
-
+}

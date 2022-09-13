@@ -5,24 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostResponseDto {
-    private Long postId;
+public class SalesListDto {
+    private String imgUrl;
     private String title;
-    private String author;
-    private String state;
-    private String tag;
     private int price;
-    private String content;
+    private String state;
     private String location;
-    private String postImgUrl;
     private int likeCount;
-    private int viewCount;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 }

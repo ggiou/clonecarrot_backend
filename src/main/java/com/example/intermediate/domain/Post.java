@@ -2,7 +2,6 @@ package com.example.intermediate.domain;
 
 
 import com.example.intermediate.controller.request.PostRequestDto;
-import com.example.intermediate.controller.request.StateRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -82,6 +81,4 @@ public class Post extends Timestamped {
     public  void view(){
         this.viewCount +=1;
     } //조회수
-
-
 }
