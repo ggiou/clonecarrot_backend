@@ -63,6 +63,7 @@ public class StateService {
         return ResponseDto.success(post.getTitle()+"의 상태가 판매중으로 변경 되었습니다.");
     }
 
+    @Transactional
     public ResponseDto<?> outstate_post(Long postId, HttpServletRequest request) {
         Member member = validateMember(request); //현재 로그인 중인 멤버
 

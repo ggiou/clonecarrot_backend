@@ -152,6 +152,7 @@ public class PostService {
                         .build());
     }
 
+    @Transactional //transactional이 설정 안되면 update시 repository save 일일히 해줘야함
     public ResponseDto<?> updatePost(PostRequestDto postRequestDto, HttpServletRequest request) throws UnsupportedEncodingException {
         if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -216,7 +217,6 @@ public class PostService {
     }
 
     @Transactional
-
     public ResponseDto<?> deletePost(Long postId, HttpServletRequest request) {
 
         if (null == request.getHeader("RefreshToken")) {
