@@ -28,6 +28,7 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
+
   @Column(unique = true)
   private Long kakaoId;
 
@@ -38,6 +39,9 @@ public class Member extends Timestamped {
   public void prePersist(){
     this.location = this.location == null ? "현재 위치가 지정되어있지 않습니다." : this.location;
   }
+
+  @Column(nullable = true)
+  private String profileImgUrl;
 
   @Override
   public boolean equals(Object o) {
