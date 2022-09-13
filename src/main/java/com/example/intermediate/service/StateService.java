@@ -1,5 +1,6 @@
 package com.example.intermediate.service;
 
+import com.example.intermediate.controller.request.PostRequestDto;
 import com.example.intermediate.controller.request.StateRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.domain.Member;
@@ -49,6 +50,7 @@ public class StateService {
         postRepository.save(post);
 
         Optional<State> temp2 = stateRepository.findById(postId);
+
         if (temp2.isEmpty()) {
             return ResponseDto.fail("FAIL-STATE", "해당 게시글이 존재하지 않습니다.");
         }
@@ -60,6 +62,7 @@ public class StateService {
         return ResponseDto.success(post.getTitle()+"의 상태가 판매중으로 변경 되었습니다.");
     }
 
+    @Transactional
     public ResponseDto<?> outstate_post(Long postId, HttpServletRequest request) {
         Member member = validateMember(request); //현재 로그인 중인 멤버
 
@@ -86,7 +89,7 @@ public class StateService {
         return ResponseDto.success(post.getTitle()+"의 상태가 판매완료로 변경 되었습니다.");
 
     }
-
+    
     @Transactional
     public Member validateMember(HttpServletRequest request) {
         if(!tokenProvider.validateToken(request.getHeader("RefreshToken"))){

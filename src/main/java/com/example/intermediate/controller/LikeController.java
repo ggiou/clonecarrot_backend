@@ -2,6 +2,7 @@ package com.example.intermediate.controller;
 
 import com.example.intermediate.controller.request.LikeRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
+
 import com.example.intermediate.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @RestController
 public class LikeController {
-
     private final LikeService likeService;
 
     @RequestMapping(value = "/api/auth/like", method = RequestMethod.PATCH)

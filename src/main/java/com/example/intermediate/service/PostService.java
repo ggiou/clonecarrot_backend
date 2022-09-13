@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -150,6 +151,8 @@ public class PostService {
                         .modifiedAt(post.getModifiedAt())
                         .build());
     }
+
+    @Transactional //transactional이 설정 안되면 update시 repository save 일일히 해줘야함
 
     public ResponseDto<?> updatePost(PostRequestDto postRequestDto, HttpServletRequest request) throws UnsupportedEncodingException {
         if (null == request.getHeader("RefreshToken")) {
