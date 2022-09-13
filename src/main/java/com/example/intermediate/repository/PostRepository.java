@@ -12,7 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByModifiedAtDesc(); //수정된 날짜로 찾기
     List<Post> findByMember(Member member); //회원 별 찾기
 
-
     Optional<Post> findById(Long id);
 
     Optional<Post> findByPostImgUrl(String postImgUrl); //게시글 이미지 별 찾기

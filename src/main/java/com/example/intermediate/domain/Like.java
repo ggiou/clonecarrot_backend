@@ -24,6 +24,4 @@ public class Like extends Timestamped {
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;  //어떤 사용자가 좋아요~(내 관심 상품 목록 활용)
-
-
 }

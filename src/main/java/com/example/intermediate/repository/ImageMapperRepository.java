@@ -9,4 +9,3 @@ public interface ImageMapperRepository extends JpaRepository<ImageMapper, Long> 
     Optional<ImageMapper> findByName(String name);
     Optional<ImageMapper> findByImageUrl(String url);
 }
-

@@ -2,7 +2,8 @@ package com.example.intermediate.controller;
 
 import com.example.intermediate.controller.request.LikeRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
-import com.example.intermediate.service.LikeSerivce;
+
+import com.example.intermediate.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @RestController
 public class LikeController {
-
-    private final LikeSerivce likeSerivce;
+    private final LikeService likeService;
 
     @RequestMapping(value = "/api/auth/like", method = RequestMethod.PATCH)
     public ResponseDto<?> like_post(@RequestBody LikeRequestDto likeRequestDto, HttpServletRequest request){
-        return likeSerivce.post_like(likeRequestDto, request);
+        return likeService.post_like(likeRequestDto, request);
     } //좋아요 하기(관심 상품)
 
     @RequestMapping(value = "/api/auth/dislike", method = RequestMethod.PATCH)
     public ResponseDto<?> dislike_post(@RequestBody LikeRequestDto likeRequestDto, HttpServletRequest request){
-        return likeSerivce.post_dislike(likeRequestDto, request);
+        return likeService.post_dislike(likeRequestDto, request);
     } //좋아요 취소 하기(관심 상품 해제)
 }

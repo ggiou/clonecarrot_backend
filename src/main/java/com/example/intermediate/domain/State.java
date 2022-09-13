@@ -13,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name = "State_table")
 public class State {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,5 @@ public class State {
     } //판매중으로 변경
     public  void outstate(){
         this.state = "판매완료";
-
-    } //판매완료로 변경
+    }
 }
