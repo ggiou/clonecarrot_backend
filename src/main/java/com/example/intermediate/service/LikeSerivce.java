@@ -34,6 +34,7 @@ public class LikeSerivce {
         Post post = temp.get();
 
         post.like(); //총 좋아요 수 올리기
+
         Like like = Like.builder()
                 .member(member)
                 .postId(post.getId())

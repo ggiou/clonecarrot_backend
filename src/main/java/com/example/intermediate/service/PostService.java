@@ -4,10 +4,7 @@ import com.example.intermediate.controller.request.PostRequestDto;
 import com.example.intermediate.controller.response.PostListResponseDto;
 import com.example.intermediate.controller.response.PostResponseDto;
 import com.example.intermediate.controller.response.ResponseDto;
-import com.example.intermediate.domain.ImageMapper;
-import com.example.intermediate.domain.Member;
-import com.example.intermediate.domain.Post;
-import com.example.intermediate.domain.State;
+import com.example.intermediate.domain.*;
 import com.example.intermediate.jwt.TokenProvider;
 import com.example.intermediate.repository.ImageMapperRepository;
 import com.example.intermediate.repository.LikeRepository;
@@ -61,9 +58,9 @@ public class PostService {
 
         if (!multipartFile.isEmpty()) { // 삽입 할 이미지가 있다면
             ResponseDto<?> responseDto = amazonS3Service.uploadFile(multipartFile); // s3 파일업로드
-            if(!responseDto.isSuccess())
+            if (!responseDto.isSuccess())
                 return responseDto;
-            ImageMapper imageMapper = (ImageMapper)responseDto.getData();
+            ImageMapper imageMapper = (ImageMapper) responseDto.getData();
             postImageUrl = imageMapper.getImageUrl();
         } else { //삽입 할 이미지가 없다면
             postImageUrl = null;
@@ -71,8 +68,8 @@ public class PostService {
 
 
         ResponseDto<?> stateResponseDto = stateService.createState(request);
-        State states = (State)stateResponseDto.getData();
-       String state = states.getState();
+        State states = (State) stateResponseDto.getData();
+        String state = states.getState();
 
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
@@ -110,32 +107,33 @@ public class PostService {
     public ResponseDto<?> getAllPost() {
         List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc();
         List<PostListResponseDto> postsList = new ArrayList<>();
-        for (Post post : posts){
+        for (Post post : posts) {
             postsList.add(PostListResponseDto.builder()
-                            .postId(post.getId())
-                            .price(post.getPrice())
-                            .location(post.getLocation())
-                            .state(post.getState())
-                            .title(post.getTitle())
-                            .viewCount(post.getViewCount())
-                            .likeCount(post.getLikeCount())
-                            .postImgUrl(post.getPostImgUrl())
-                            .createdAt(post.getCreatedAt())
-                            .modifiedAt(post.getModifiedAt())
+                    .postId(post.getId())
+                    .price(post.getPrice())
+                    .location(post.getLocation())
+                    .state(post.getState())
+                    .title(post.getTitle())
+                    .viewCount(post.getViewCount())
+                    .likeCount(post.getLikeCount())
+                    .postImgUrl(post.getPostImgUrl())
+                    .createdAt(post.getCreatedAt())
+                    .modifiedAt(post.getModifiedAt())
                     .build());
         }
         return ResponseDto.success(postsList);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseDto<?> getPost(Long postId) {
-        Post post = isPresentPost(postId);
-
-
-        if (null == post) {
+        Optional<Post> posts = postRepository.findById(postId);
+        Post post = posts.get();
+        if (null == post.getId()) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
         }
         post.view();
+
+
         return ResponseDto.success(
                 PostResponseDto.builder()
                         .postId(post.getId())
@@ -151,8 +149,7 @@ public class PostService {
                         .viewCount(post.getViewCount())
                         .createdAt(post.getCreatedAt())
                         .modifiedAt(post.getModifiedAt())
-        );
-
+                        .build());
     }
 
     public ResponseDto<?> updatePost(PostRequestDto postRequestDto, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -180,26 +177,39 @@ public class PostService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 수정할 수 있습니다.");
         }
 
-        Optional<ImageMapper> optionalImageMapper = imageMapperRepository.findByImageUrl(post.getPostImgUrl());
-        ImageMapper image = optionalImageMapper.get();
-
-        if (amazonS3Service.removeFile(image.getName()))
-            return ResponseDto.fail("BAD_REQUEST", "삭제 오류 발생.");
-
         String postImageUrl;
         MultipartFile multipartFile = postRequestDto.getFile();
 
-        if (!multipartFile.isEmpty()) { // 삽입 할 이미지가 있다면
-            ResponseDto<?> responseDto = amazonS3Service.uploadFile(multipartFile); // s3 파일업로드
-            if(!responseDto.isSuccess())
-                return responseDto;
-            ImageMapper imageMapper = (ImageMapper)responseDto.getData();
-            postImageUrl = imageMapper.getImageUrl();
-        } else { //삽입 할 이미지가 없다면
-            postImageUrl = null;
+        if (post.getPostImgUrl() == null) { //이전 게시글에 이미지가 없는 경우
+            if (!multipartFile.isEmpty()) { // 삽입 할 이미지가 있다면
+                ResponseDto<?> responseDto = amazonS3Service.uploadFile(multipartFile); // s3 파일업로드
+                if (!responseDto.isSuccess())
+                    return responseDto;
+                ImageMapper imageMapper = (ImageMapper) responseDto.getData();
+                postImageUrl = imageMapper.getImageUrl();
+            } else { //삽입 할 이미지가 없다면
+                postImageUrl = null;
+            }
+        } else { //이전 게시글에 이미지가 있는 경우
+            Optional<ImageMapper> optionalImageMapper = imageMapperRepository.findByImageUrl(post.getPostImgUrl());
+            ImageMapper image = optionalImageMapper.get();
+            // s3의 경우 name = key 값을 알아야 삭제 가능
+            if (amazonS3Service.removeFile(image.getName()))
+                return ResponseDto.fail("BAD_REQUEST", "삭제 오류 발생.");
+            if (!multipartFile.isEmpty()) { // 삽입 할 이미지가 있다면
+                ResponseDto<?> responseDto = amazonS3Service.uploadFile(multipartFile); // s3 파일업로드
+                if (!responseDto.isSuccess())
+                    return responseDto;
+                ImageMapper imageMapper = (ImageMapper) responseDto.getData();
+                postImageUrl = imageMapper.getImageUrl();
+            } else { //삽입 할 이미지가 없다면
+                postImageUrl = null;
+            }
         }
 
         post.update(postRequestDto, postImageUrl);
+
+        postRepository.save(post);
 
         return ResponseDto.success(post);
 
@@ -233,16 +243,20 @@ public class PostService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
 
-        Optional<ImageMapper> optionalImageMapper = imageMapperRepository.findByImageUrl(post.getPostImgUrl());
-        ImageMapper image = optionalImageMapper.get();
+        if (postRepository.findById(postId).get().getPostImgUrl() != null) {
 
-        if (amazonS3Service.removeFile(image.getName()))
-            return ResponseDto.fail("BAD_REQUEST", "삭제 오류 발생.");
+            Optional<ImageMapper> optionalImageMapper = imageMapperRepository.findByImageUrl(post.getPostImgUrl());
+            ImageMapper image = optionalImageMapper.get();
+
+            if (amazonS3Service.removeFile(image.getName()))
+                return ResponseDto.fail("BAD_REQUEST", "삭제 오류 발생.");
+        }
 
         stateRepository.deleteById(postId);
+        likeRepository.deleteAllByPostId(postId);
         postRepository.delete(post);
 
-        return ResponseDto.success(post.getTitle()+"가 성공적으로 삭제 되었습니다.");
+        return ResponseDto.success(post.getTitle() + "가 성공적으로 삭제 되었습니다.");
     }
 
     @Transactional
@@ -252,7 +266,6 @@ public class PostService {
         }
         return tokenProvider.getMemberFromAuthentication();
     }
-
 
 
     @Transactional(readOnly = true)
