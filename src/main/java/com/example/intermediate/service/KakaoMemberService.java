@@ -38,7 +38,7 @@ public class KakaoMemberService {
     private final TokenProvider tokenProvider;
     private final MemberService memberService;
 
-    public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public ResponseDto<?> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -49,7 +49,7 @@ public class KakaoMemberService {
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoMemberInfo);
 
         // 4. 강제 로그인 처리
-        forceLogin(kakaoUser, response);
+        return forceLogin(kakaoUser, response);
 
     }
 
@@ -132,10 +132,10 @@ public class KakaoMemberService {
         return kakaoUser;
     }
 
-    private void forceLogin(Member kakaoUser, HttpServletResponse response) {
+    private ResponseDto<?> forceLogin(Member kakaoUser, HttpServletResponse response) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(kakaoUser);
         memberService.tokenToHeaders(tokenDto, response);
-        ResponseDto.success(kakaoUser.getNickname() + " 로그인에 성공했습니다");
+        return ResponseDto.success(kakaoUser.getNickname() + " 로그인에 성공했습니다");
     }
 }
 // https://kauth.kakao.com/oauth/authorize?client_id=fdb42734830cbb186c8221bf3acdd6c6&redirect_uri=http://localhost:8080/api/member/kakao/callback&response_type=code
