@@ -2,6 +2,7 @@ package com.example.intermediate.controller;
 
 import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
+import com.example.intermediate.controller.response.KakaoOauthTokenDto;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.service.KakaoMemberService;
 import com.example.intermediate.service.MemberService;
@@ -40,7 +41,7 @@ public class MemberController {
 
   // oauth2 카카오 로그인
   @RequestMapping(value = "/api/member/kakao/callback", method = RequestMethod.GET)
-  public void kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-    kakaoMemberService.kakaoLogin(code);
+  public KakaoOauthTokenDto kakaoLogin(@RequestParam String code, KakaoOauthTokenDto oauthTokenDto) throws JsonProcessingException {
+    return kakaoMemberService.kakaoLogin(code, oauthTokenDto);
   }
 }
