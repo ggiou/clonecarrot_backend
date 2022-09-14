@@ -35,21 +35,21 @@ import java.util.UUID;
 public class KakaoMemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final TokenProvider tokenProvider;
-    private final MemberService memberService;
 
-    public ResponseDto<?> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public void kakaoLogin(String code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
+        ResponseEntity<String> kakaoResponse = getkakaoResponse(accessToken);
+
         // 2. 토큰으로 카카오 API 호출
-        KakaoMemberInfoDto kakaoMemberInfo = getkakaoMemberInfo(accessToken);
+        KakaoMemberInfoDto kakaoMemberInfo = getkakaoMemberInfo(kakaoResponse);
 
         // 3. 필요시에 회원가입
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoMemberInfo);
 
         // 4. 강제 로그인 처리
-        return forceLogin(kakaoUser, response);
+        forceLogin(kakaoUser);
 
     }
 
@@ -80,10 +80,11 @@ public class KakaoMemberService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        return jsonNode.get("access_token").asText();
+        String accessToken =  jsonNode.get("access_token").asText();
+        return accessToken;
     }
 
-    private KakaoMemberInfoDto getkakaoMemberInfo(String accessToken) throws JsonProcessingException {
+    private ResponseEntity<String> getkakaoResponse(String accessToken){
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -98,7 +99,10 @@ public class KakaoMemberService {
                 kakaoMemberInfoRequest,
                 String.class
         );
+        return response;
+    }
 
+    private KakaoMemberInfoDto getkakaoMemberInfo(ResponseEntity<String> response) throws JsonProcessingException {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
@@ -107,6 +111,7 @@ public class KakaoMemberService {
         System.out.println("카카오 사용자 정보: " + id + ", " + nickname);
         return new KakaoMemberInfoDto(id, nickname);
     }
+
 
     private Member registerKakaoUserIfNeeded(KakaoMemberInfoDto kakaoMemberInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
@@ -132,10 +137,10 @@ public class KakaoMemberService {
         return kakaoUser;
     }
 
-    private ResponseDto<?> forceLogin(Member kakaoUser, HttpServletResponse response) {
-        TokenDto tokenDto = tokenProvider.generateTokenDto(kakaoUser);
-        memberService.tokenToHeaders(tokenDto, response);
-        return ResponseDto.success(kakaoUser.getNickname() + " 로그인에 성공했습니다");
+    private void forceLogin(Member kakaoUser) {
+        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
 // https://kauth.kakao.com/oauth/authorize?client_id=fdb42734830cbb186c8221bf3acdd6c6&redirect_uri=http://localhost:8080/api/member/kakao/callback&response_type=code
