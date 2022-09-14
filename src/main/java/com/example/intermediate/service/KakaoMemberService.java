@@ -141,6 +141,7 @@ public class KakaoMemberService {
 
     private void kakaoUsersAuthorizationInput(Member kakaouser, HttpServletResponse response) {
         // response header에 token 추가
+
         TokenDto token = tokenProvider.generateTokenDto(kakaouser);
         response.addHeader("Authorization", "BEARER" + " " + token.getAccessToken());
         response.addHeader("RefreshToken", token.getRefreshToken());
