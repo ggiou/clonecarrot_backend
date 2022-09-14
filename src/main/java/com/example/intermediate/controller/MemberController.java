@@ -1,8 +1,8 @@
 package com.example.intermediate.controller;
 
+import com.example.intermediate.controller.request.KakaoMemberInfoDto;
 import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
-import com.example.intermediate.controller.response.KakaoOauthTokenDto;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.service.KakaoMemberService;
 import com.example.intermediate.service.MemberService;
@@ -12,9 +12,10 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -29,7 +30,7 @@ public class MemberController {
 
   @RequestMapping(value = "/api/member/login", method = RequestMethod.POST)
   public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
-      HttpServletResponse response
+                              HttpServletResponse response
   ) {
     return memberService.login(requestDto, response);
   }
@@ -41,7 +42,8 @@ public class MemberController {
 
   // oauth2 카카오 로그인
   @RequestMapping(value = "/api/member/kakao/callback", method = RequestMethod.GET)
-  public KakaoOauthTokenDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-    return kakaoMemberService.kakaoLogin(code);
+  public KakaoMemberInfoDto kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    log.info(code);
+    return kakaoMemberService.kakaoLogin(code, response);
   }
 }
