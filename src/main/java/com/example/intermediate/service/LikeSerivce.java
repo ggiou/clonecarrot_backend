@@ -63,12 +63,12 @@ public class LikeSerivce {
         Member member = validateMember(request); //현재 로그인 중인 멤버
 
         Optional<Like> temp = likeRepository.findByIdAndPostId(likeRequestDto.getLikeId(), likeRequestDto.getPostId());
-        if (!temp.isPresent()) {
+        if (temp.isEmpty()) {
             return ResponseDto.fail("FAIL-DISLIKE", "해당 관심 항목이 존재하지 않습니다.");
         }
 
         Optional<Post> temp2 = postRepository.findById(likeRequestDto.getPostId());
-        if (!temp2.isPresent()) {
+        if (temp2.isEmpty()) {
             return ResponseDto.fail("FAIL-DISLIKE", "해당 게시글이 존재하지 않습니다.");
         }
 

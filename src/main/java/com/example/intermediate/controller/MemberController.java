@@ -30,7 +30,7 @@ public class MemberController {
 
   @RequestMapping(value = "/api/member/login", method = RequestMethod.POST)
   public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
-      HttpServletResponse response
+                              HttpServletResponse response
   ) {
     return memberService.login(requestDto, response);
   }
