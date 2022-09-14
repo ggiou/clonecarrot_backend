@@ -40,7 +40,7 @@ public class MemberController {
 
   // oauth2 카카오 로그인
   @RequestMapping(value = "/api/member/kakao/callback", method = RequestMethod.GET)
-  public ResponseDto<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-    return kakaoMemberService.kakaoLogin(code, response);
+  public void kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+    kakaoMemberService.kakaoLogin(code);
   }
 }
