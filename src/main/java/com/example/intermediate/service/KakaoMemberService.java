@@ -141,8 +141,9 @@ public class KakaoMemberService {
 
     private void kakaoUsersAuthorizationInput(Member kakaouser, HttpServletResponse response) {
         // response header에 token 추가
-        TokenDto token = tokenProvider.generateTokenDto(kakaouser);
-        response.addHeader("Authorization", "BEARER" + " " + token);
+        response.addHeader("Authorization", "BEARER" + " " + token.getAccessToken());
+        response.addHeader("RefreshToken", token.getRefreshToken());
+        response.addHeader("Access-Token-Expire-Time", token.getAccessTokenExpiresIn().toString());
     }
 }
 // https://kauth.kakao.com/oauth/authorize?client_id=fdb42734830cbb186c8221bf3acdd6c6&redirect_uri=http://localhost:8080/api/member/kakao/callback&response_type=code
