@@ -25,4 +25,6 @@ public class PostResponseDto {
     private int viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private String profileImgUrl;
 }

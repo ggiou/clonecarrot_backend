@@ -63,7 +63,7 @@ public class MemberService {
         tokenToHeaders(tokenDto, response);
 
         return ResponseDto.success(member.getNickname() + " 로그인에 성공했습니다");
-
+    }
 
     public ResponseDto<?> logout(HttpServletRequest request) {
         if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
