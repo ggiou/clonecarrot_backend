@@ -153,6 +153,7 @@ public class PostService {
                         .content(post.getContent())
                         .location(post.getLocation())
                         .postImgUrl(post.getPostImgUrl())
+                        .profileImgUrl(post.getMember().getProfileImgUrl())
                         .likeCount(post.getLikeCount())
                         .viewCount(post.getViewCount())
                         .createdAt(post.getCreatedAt())
