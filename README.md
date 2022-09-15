@@ -39,7 +39,6 @@
 
 
 ### 💡트러블슈팅
-* BE
 1. oauth2 인증방식 (카카오 로그인)을 사용할 때 ‘’401 unauthorized: (no body)” 에러 발생
     
     → 클라이언트의 정보를 담는 body에 데이터가 없다고 나옴  
@@ -47,4 +46,13 @@
 
 2. 서버 배포 후 카카오 로그인 인가코드가  프론트엔드에서 서버로 넘어오지 않는 문제  
     → 카카오 어플리케이션 도메인을 배포한 서버 주소로 변경  
-    → 프론트엔드와 백엔드 API CLIENT KEY, REDIRECT URL 주소 통일
+    → 프론트엔드와 백엔드 API CLIENT KEY, REDIRECT URL 주소 통일. 
+    
+3. @Transactional, (readonly) 설정.  
+   → 변경 사항이 잘 넘어가 수정되 response가 오지만 실질적인 db에서는 저장이 안됨(state, like, 조회 수..).  
+   → 알고보니 transactional 설정을 안해 repository에 저장을 해줘야 했으며, readonly라 수정사항이 변경이 안됨.  
+   → 코드에 넣어주고 해결 완료
+   
+4. null pointer
+   → 예외처리 검사시 null 데이터에 대해 받을 수 없다 떠 오류가 생김      
+   → null 일경우와 아닐 경우로 나누어 예외처리를 해 해결.  
