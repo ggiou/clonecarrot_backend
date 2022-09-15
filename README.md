@@ -1,6 +1,6 @@
 # 🗒 당근마켓 Clone Project
 
-## [와이어프레임, API 설계](https://www.notion.so/acho/4-S-A-bb46343e3e5e4f3f944e419e3ebc2705)
+## [와이어프레임 | API 설계](https://www.notion.so/acho/4-S-A-bb46343e3e5e4f3f944e419e3ebc2705)
 
 ### 🔎 개발 환경
     - Springboot 2.7.2
