@@ -1,6 +1,5 @@
 # 📋 당근마켓 Clone Project (backend)
 
-## [와이어프레임 | API 설계 | (frontend + backend)](https://www.notion.so/acho/4-S-A-bb46343e3e5e4f3f944e419e3ebc2705)
 
 ### 🔎 개발 환경
     - Springboot 2.7.2
@@ -8,7 +7,7 @@
     - Security / JWT
     - AWS s3
     
-    
+### 기능
 #### 🔗 기능1
         * 회원가입
         * 로그인
@@ -29,7 +28,14 @@
         * 내 판매내역 조회 및 판매상태 확인
         * 내 관심목록 조회 및 판매상태 확인
         * 관심목록 제거
-   
+        
+### 와이어프레임
+![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330311-336e3e81-41f4-4855-acf9-f26c03d8ae4c.jpeg)
+
+### API 명세서
+![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330406-1de8f224-e10e-4417-8d3c-032c139be9c1.jpeg)
+![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330441-4026c27e-9475-4231-a387-01071e6644db.jpeg)
+
    
 ### Trouble shooting
 1. oauth2 인증방식 (카카오 로그인)을 사용할 때 ‘’401 unauthorized: (no body)” 에러 발생
