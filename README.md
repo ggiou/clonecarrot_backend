@@ -7,7 +7,7 @@
     - Security / JWT
     - AWS s3
     
-### 기능
+----------
 #### 🔗 기능1
         * 회원가입
         * 로그인
@@ -33,11 +33,12 @@
 ![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330311-336e3e81-41f4-4855-acf9-f26c03d8ae4c.jpeg)
 
 ### API 명세서
-![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330406-1de8f224-e10e-4417-8d3c-032c139be9c1.jpeg)
-![Artboard 13@2x-100](https://user-images.githubusercontent.com/44489399/190330441-4026c27e-9475-4231-a387-01071e6644db.jpeg)
+![스크린샷 2022-09-15 오후 3 23 11](https://user-images.githubusercontent.com/44489399/190330882-e5dbc1ad-a0fc-4e7f-86d1-d4e7b188d754.jpeg)
+![스크린샷 2022-09-15 오후 3 24 38](https://user-images.githubusercontent.com/44489399/190330892-96e0dfd8-81dd-4f3a-bab1-4008046605d6.jpeg)
 
-   
-### Trouble shooting
+
+-------
+### 💡트러블슈팅
 1. oauth2 인증방식 (카카오 로그인)을 사용할 때 ‘’401 unauthorized: (no body)” 에러 발생
     
     → 클라이언트의 정보를 담는 body에 데이터가 없다고 나옴  
