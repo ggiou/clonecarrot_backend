@@ -56,3 +56,9 @@
 4. null pointer
    → 예외처리 검사시 null 데이터에 대해 받을 수 없다 떠 오류가 생김      
    → null 일경우와 아닐 경우로 나누어 예외처리를 해 해결.  
+   
+### 💡관련 링크
+1. 시연 영상
+    → https://www.youtube.com/watch?v=tLftqn6eL78
+2. 노션 링크
+    → https://acho.notion.site/4-S-A-bb46343e3e5e4f3f944e419e3ebc2705
