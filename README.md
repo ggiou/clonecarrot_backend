@@ -61,4 +61,6 @@
 1. 시연 영상
     → https://www.youtube.com/watch?v=tLftqn6eL78
 2. 노션 링크
-    → https://acho.notion.site/4-S-A-bb46343e3e5e4f3f944e419e3ebc2705
+    → https://brindle-weight-a9d.notion.site/Clone-Carrot-Market-S-A-e35d146c17104094bdaef14bf4859f81?pvs=4
+
+
